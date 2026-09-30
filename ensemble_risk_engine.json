@@ -1,0 +1,189 @@
+{
+  "engine_version": "ensemble-v1.0",
+  "generated_at": "2026-09-30T17:42:57.804380+00:00",
+  "latest_date": "2026-09-01",
+  "features": [
+    "vix",
+    "gpr",
+    "epu_us",
+    "nfci",
+    "baa10y",
+    "wti",
+    "stlfsi",
+    "umcsent",
+    "term_spread",
+    "stress_composite",
+    "stress_composite_v2",
+    "vix_z60",
+    "gpr_z60",
+    "epu_us_z60",
+    "nfci_z60",
+    "baa10y_z60",
+    "stress_l1",
+    "stress_l3",
+    "spy_vol_1m"
+  ],
+  "primary_target": {
+    "id": "y_dd_6m",
+    "description": "Probability the market reaches at least a -10% path drawdown within the next 6 months",
+    "horizon_months": 6
+  },
+  "secondary_target": {
+    "id": "y_dd_12m",
+    "description": "Probability the market reaches at least a -15% path drawdown within the next 12 months",
+    "horizon_months": 12
+  },
+  "models": [
+    "Logistic",
+    "LDA",
+    "Linear SVM",
+    "RBF SVM",
+    "Random Forest",
+    "Neural Network"
+  ],
+  "primary": {
+    "component_probabilities": {
+      "Logistic": 0.009981106498729526,
+      "LDA": 0.11639596847979282,
+      "Linear SVM": 0.060933698222621825,
+      "RBF SVM": 0.052954948720974594,
+      "Random Forest": 0.22339047378684584,
+      "Neural Network": 0.009364504677904036
+    },
+    "ensemble_probability": 0.29470664287408765,
+    "meta_weights": {
+      "Logistic": 0.34591624289697875,
+      "LDA": 0.11449883947856257,
+      "Linear SVM": 0.13907611396595365,
+      "RBF SVM": 0.1776495632726639,
+      "Random Forest": 0.08090054896327659,
+      "Neural Network": 0.1419586914225646
+    },
+    "holdout_metrics": [
+      {
+        "model": "Logistic",
+        "roc_auc": 0.29614485981308414,
+        "pr_auc": 0.09368898181458721,
+        "brier": 0.12584687104833256
+      },
+      {
+        "model": "LDA",
+        "roc_auc": 0.35572429906542063,
+        "pr_auc": 0.10121927250662319,
+        "brier": 0.11598318380525399
+      },
+      {
+        "model": "Linear SVM",
+        "roc_auc": 0.28913551401869164,
+        "pr_auc": 0.09512057116996911,
+        "brier": 0.11776013471648762
+      },
+      {
+        "model": "RBF SVM",
+        "roc_auc": 0.32359813084112155,
+        "pr_auc": 0.09603569157187991,
+        "brier": 0.16566396236471972
+      },
+      {
+        "model": "Random Forest",
+        "roc_auc": 0.5572429906542056,
+        "pr_auc": 0.15879328705313095,
+        "brier": 0.12200228077882136
+      },
+      {
+        "model": "Neural Network",
+        "roc_auc": 0.5175233644859814,
+        "pr_auc": 0.15472048238552477,
+        "brier": 0.12255647161729867
+      },
+      {
+        "model": "Ensemble",
+        "roc_auc": 0.33586448598130847,
+        "pr_auc": 0.09727199664154278,
+        "brier": 0.1628608656664904
+      }
+    ],
+    "train_end": "2015-07-01",
+    "test_start": "2016-01-01",
+    "test_end": "2026-03-01",
+    "test_n": 123,
+    "test_events": 16,
+    "test_prevalence": 0.13008130081300814
+  },
+  "secondary": {
+    "component_probabilities": {
+      "Logistic": 0.126921189963324,
+      "LDA": 0.21228391002914573,
+      "Linear SVM": 0.13815342829601365,
+      "RBF SVM": 0.1780092980744175,
+      "Random Forest": 0.26688453659859906,
+      "Neural Network": 0.2274141404213916
+    },
+    "ensemble_probability": 0.4538250834565489,
+    "meta_weights": {
+      "Logistic": 0.19543540401443757,
+      "LDA": 0.1407505994008722,
+      "Linear SVM": 0.12171473459921933,
+      "RBF SVM": 0.19017096196013084,
+      "Random Forest": 0.25719626185481403,
+      "Neural Network": 0.09473203817052606
+    },
+    "holdout_metrics": [
+      {
+        "model": "Logistic",
+        "roc_auc": 0.588336192109777,
+        "pr_auc": 0.12390516863813461,
+        "brier": 0.10013959356575093
+      },
+      {
+        "model": "LDA",
+        "roc_auc": 0.614065180102916,
+        "pr_auc": 0.14525497222628322,
+        "brier": 0.10466205734482706
+      },
+      {
+        "model": "Linear SVM",
+        "roc_auc": 0.5651801029159519,
+        "pr_auc": 0.11694371394098468,
+        "brier": 0.09988687018065774
+      },
+      {
+        "model": "RBF SVM",
+        "roc_auc": 0.702401372212693,
+        "pr_auc": 0.37000224861781894,
+        "brier": 0.09701373951183871
+      },
+      {
+        "model": "Random Forest",
+        "roc_auc": 0.313893653516295,
+        "pr_auc": 0.07541072769512455,
+        "brier": 0.13502534847902656
+      },
+      {
+        "model": "Neural Network",
+        "roc_auc": 0.5836192109777015,
+        "pr_auc": 0.1126908524567291,
+        "brier": 0.09990644884746387
+      },
+      {
+        "model": "Ensemble",
+        "roc_auc": 0.5377358490566038,
+        "pr_auc": 0.11055227767052085,
+        "brier": 0.2291084040870241
+      }
+    ],
+    "train_end": "2015-01-01",
+    "test_start": "2016-01-01",
+    "test_end": "2025-09-01",
+    "test_n": 117,
+    "test_events": 11,
+    "test_prevalence": 0.09401709401709402
+  },
+  "methodology": {
+    "calibration": "Platt/sigmoid calibration fitted only on purged out-of-fold predictions within the historical training sample",
+    "ensemble": "Regularized balanced logistic meta-model trained on calibrated out-of-fold component predictions",
+    "validation": "Time-ordered holdout beginning 2016-01, with target-horizon purging",
+    "censoring": "Months without a complete forward target window are excluded from evaluation and fitting",
+    "disclaimer": "Statistical risk engine; not investment advice and not a reliable collapse timer."
+  }
+}
