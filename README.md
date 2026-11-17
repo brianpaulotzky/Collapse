@@ -39,3 +39,7 @@ This is a statistical risk monitor, not investment advice and not a reliable col
 ## Automatic refresh
 
 The repository now includes a GitHub Actions workflow at `.github/workflows/update-risk.yml`. It refreshes the public data inputs daily, rebuilds the latest Version 2 monthly feature row, refits the six-model ensemble, and commits the refreshed JSON used by the GitHub Pages dashboard. See `AUTOMATION_SETUP.md` for details.
+
+## Current-data correction
+
+The page now loads JSON instead of embedded September defaults. The prominent observations table uses dated FRED releases with source links and freshness indicators. Historical ensemble outputs are explicitly archived and scenario calculations no longer overwrite the headline. See AUTOMATION_SETUP.md for the active observations workflow and Pages setup. Earlier ensemble and automatic-refit descriptions above describe the experimental historical model, not the current market-observations refresh.

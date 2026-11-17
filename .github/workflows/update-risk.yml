@@ -1,0 +1,31 @@
+name: Refresh published market observations
+on:
+  schedule:
+    - cron: '30 23 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: market-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python refresh_market.py
+      - name: Commit observations
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add market_snapshot.json
+          git diff --cached --quiet || git commit -m 'Refresh dated market observations'
+          git push
+      - name: Rebuild existing GitHub Pages site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"

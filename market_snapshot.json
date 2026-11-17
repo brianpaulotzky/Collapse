@@ -1,0 +1,116 @@
+{
+  "fetched_at": "2026-11-17T04:41:01.259241+00:00",
+  "observations": [
+    {
+      "id": "SP500",
+      "label": "S&P 500",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/SP500",
+      "value": 7416.59,
+      "observation_date": "2026-11-16",
+      "status": "available"
+    },
+    {
+      "id": "NASDAQCOM",
+      "label": "Nasdaq Composite",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/NASDAQCOM",
+      "value": 25136.27,
+      "observation_date": "2026-11-13",
+      "status": "available"
+    },
+    {
+      "id": "VIXCLS",
+      "label": "VIX",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/VIXCLS",
+      "value": 19.3,
+      "observation_date": "2026-11-13",
+      "status": "available"
+    },
+    {
+      "id": "DGS10",
+      "label": "10-year Treasury yield",
+      "unit": "%",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/DGS10",
+      "value": 5.15,
+      "observation_date": "2026-11-13",
+      "status": "available"
+    },
+    {
+      "id": "T10Y2Y",
+      "label": "10Y\u20132Y Treasury spread",
+      "unit": "percentage points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/T10Y2Y",
+      "value": 0.29,
+      "observation_date": "2026-11-16",
+      "status": "available"
+    },
+    {
+      "id": "BAA10YM",
+      "label": "Baa\u201310Y credit spread",
+      "unit": "percentage points",
+      "max_age_days": 65,
+      "source": "https://fred.stlouisfed.org/series/BAA10YM",
+      "value": 1.46,
+      "observation_date": "2026-10-01",
+      "status": "available"
+    },
+    {
+      "id": "DCOILWTICO",
+      "label": "WTI crude oil",
+      "unit": "USD/barrel",
+      "max_age_days": 10,
+      "source": "https://fred.stlouisfed.org/series/DCOILWTICO",
+      "value": 89.62,
+      "observation_date": "2026-11-11",
+      "status": "available"
+    },
+    {
+      "id": "NFCI",
+      "label": "Chicago Fed financial conditions",
+      "unit": "index",
+      "max_age_days": 21,
+      "source": "https://fred.stlouisfed.org/series/NFCI",
+      "value": -0.462,
+      "observation_date": "2026-11-06",
+      "status": "available"
+    },
+    {
+      "id": "STLFSI4",
+      "label": "St. Louis financial stress",
+      "unit": "index",
+      "max_age_days": 21,
+      "source": "https://fred.stlouisfed.org/series/STLFSI4",
+      "value": -0.4918,
+      "observation_date": "2026-11-06",
+      "status": "available"
+    },
+    {
+      "id": "UMCSENT",
+      "label": "Michigan consumer sentiment",
+      "unit": "index",
+      "max_age_days": 65,
+      "source": "https://fred.stlouisfed.org/series/UMCSENT",
+      "value": 48.1,
+      "observation_date": "2026-09-01",
+      "status": "available"
+    },
+    {
+      "id": "USEPUINDXM",
+      "label": "US policy uncertainty",
+      "unit": "index",
+      "max_age_days": 65,
+      "source": "https://fred.stlouisfed.org/series/USEPUINDXM",
+      "value": 157.04317,
+      "observation_date": "2026-10-01",
+      "status": "available"
+    }
+  ],
+  "note": "Latest published observations, not real-time quotes. Monthly dates identify the observation period; releases can lag and be revised."
+}

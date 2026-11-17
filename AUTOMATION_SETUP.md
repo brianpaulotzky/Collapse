@@ -1,39 +1,9 @@
-# Collapse — automatic data refresh
+# Published market observations
 
-This package adds a GitHub Actions updater to the existing static GitHub Pages app.
+`refresh_market.py` uses Python's standard library to fetch eleven public FRED series, preserving each observation date, unit and source URL. Failed sources are marked unavailable, never filled with historical model means. The page independently warns about old observations and snapshots older than two days. Retrieval timestamps are not observation or publication dates.
 
-## What it does
+The workflow `.github/workflows/update-risk.yml` runs weekdays at 23:30 UTC and on manual dispatch. It commits `market_snapshot.json` and explicitly requests a rebuild of the existing branch-based Pages site; a bot commit alone does not trigger a branch Pages build. Keep the existing branch-based Pages source. Enable Actions and workflow write permissions in repository settings. Scheduled runs depend on GitHub availability and repository policy.
 
-Once installed in the repository, the workflow:
+Run locally with `python refresh_market.py`. Serve the repository over HTTP (for example `python -m http.server`); opening index.html as a file will not support JSON fetches.
 
-1. Downloads fresh public market/economic observations.
-2. Rebuilds the monthly Version 2 feature row.
-3. Recalculates the rolling 60-month z-scores and stress composites.
-4. Refits the six-model ensemble using only rows with known forward targets.
-5. Uses a purged expanding out-of-fold meta-model for the ensemble.
-6. Writes `data/risk_dashboard_data.json` and `data/ensemble_risk_engine.json`.
-7. Commits the changes. Your existing GitHub Pages branch deployment then republishes the site.
-
-## Data sources
-
-- FRED: VIX, EPU, NFCI, Baa-10Y spread, WTI, STLFSI4, Michigan Sentiment, and 10Y-2Y term spread.
-- Caldara/Iacoviello: monthly Geopolitical Risk Index.
-- Yahoo Finance: SPY adjusted daily prices used for month-end price and 1-month realized volatility.
-
-No API key is required by this updater.
-
-## Schedule
-
-The workflow runs daily at 18:17 UTC and can also be started manually from the repository's Actions tab.
-
-The updater treats the most recent sufficiently populated SPY month as the live monthly feature month. Slow-moving macro series remain at their latest available observation; they are not fabricated or backfilled into future months.
-
-## Important model note
-
-The repository contains the original Version 2 dataset and the previously generated ensemble output, but it does not contain the private fitting code/calibration objects used to generate that earlier ensemble. Therefore this automation uses a reproducible `ensemble-v1.1-auto` refit based on the documented Version 2 feature definitions and the six model families shown in the dashboard. The original transparent scenario calculator remains unchanged.
-
-The displayed holdout metrics are recalculated by the updater each run. They should be read as model diagnostics, not as proof that the model can reliably time market collapses.
-
-## GitHub Pages
-
-The repository can continue using **Settings → Pages → Deploy from a branch**. The updater only changes JSON data files, so the normal Pages deployment will publish the new values after each successful commit.
+The historical risk engine remains archived. It is not refreshed by the observations workflow. Its training data provenance, feature construction, target labels and probability calibration require a separate audit before presenting any output as a current risk estimate. Market observations do not automatically validate a collapse model. The standalone experimental refit script is not a production refresh path.

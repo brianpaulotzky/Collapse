@@ -31,8 +31,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC, LinearSVC
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = ROOT / "data"
+ROOT = Path(__file__).resolve().parent
+DATA_DIR = ROOT
 DATA_JSON = DATA_DIR / "risk_dashboard_data.json"
 ENGINE_JSON = DATA_DIR / "ensemble_risk_engine.json"
 ARCHIVE_ZIP = DATA_DIR / "crisis_features_dataset2.zip"
@@ -71,6 +71,7 @@ def fetch_fred(series: str) -> pd.Series:
     # Retry with an explicit query parameter if the first request is unusual.
     from io import StringIO
     df = pd.read_csv(StringIO(r.text))
+    df = df.rename(columns={"observation_date": "DATE"})
     if "DATE" not in df.columns:
         raise RuntimeError(f"Unexpected FRED response for {series}")
     value_col = [c for c in df.columns if c != "DATE"][0]
@@ -82,6 +83,7 @@ def fetch_fred(series: str) -> pd.Series:
 def fetch_fred_series(series: str) -> pd.Series:
     r = get(f"{FRED_URL}?id={series}", timeout=60)
     df = pd.read_csv(io.StringIO(r.text))
+    df = df.rename(columns={"observation_date": "DATE"})
     if "DATE" not in df.columns:
         raise RuntimeError(f"Unexpected FRED response for {series}")
     value_col = [c for c in df.columns if c != "DATE"][0]
