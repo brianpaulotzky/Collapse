@@ -1,15 +1,66 @@
 {
-  "fetched_at": "2026-11-25T14:22:38.364449+00:00",
+  "fetched_at": "2026-11-25T16:22:13.909369+00:00",
   "observations": [
+    {
+      "id": "DJIA",
+      "label": "Dow Jones Industrial Average",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/DJIA",
+      "value": 50018.7,
+      "observation_date": "2026-11-24",
+      "status": "available",
+      "previous_date": "2026-11-23",
+      "previous_value": 49595.31,
+      "change_pct": 0.8536895928264121
+    },
+    {
+      "id": "NASDAQ100",
+      "label": "Nasdaq 100",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/NASDAQ100",
+      "value": 26214.17,
+      "observation_date": "2026-11-24",
+      "status": "available",
+      "previous_date": "2026-11-23",
+      "previous_value": 26746.1,
+      "change_pct": -1.988813322316152
+    },
+    {
+      "id": "WILL5000INDFC",
+      "label": "Wilshire 5000",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/WILL5000INDFC",
+      "value": null,
+      "observation_date": null,
+      "status": "unavailable",
+      "error": "TimeoutError"
+    },
+    {
+      "id": "NASDAQNMS",
+      "label": "Nasdaq Global Market Composite",
+      "unit": "index points",
+      "max_age_days": 7,
+      "source": "https://fred.stlouisfed.org/series/NASDAQNMS",
+      "value": null,
+      "observation_date": null,
+      "status": "unavailable",
+      "error": "TimeoutError"
+    },
     {
       "id": "SP500",
       "label": "S&P 500",
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/SP500",
-      "value": 7237.17,
-      "observation_date": "2026-11-23",
-      "status": "available"
+      "value": 7201.09,
+      "observation_date": "2026-11-24",
+      "status": "available",
+      "previous_date": "2026-11-23",
+      "previous_value": 7237.17,
+      "change_pct": -0.49853741172308785
     },
     {
       "id": "NASDAQCOM",
@@ -19,7 +70,10 @@
       "source": "https://fred.stlouisfed.org/series/NASDAQCOM",
       "value": 23733.54,
       "observation_date": "2026-11-24",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-11-23",
+      "previous_value": 24089.56,
+      "change_pct": -1.4779016304158343
     },
     {
       "id": "VIXCLS",
@@ -27,9 +81,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 26.62,
-      "observation_date": "2026-11-23",
-      "status": "available"
+      "value": 26.36,
+      "observation_date": "2026-11-24",
+      "status": "available",
+      "previous_date": "2026-11-23",
+      "previous_value": 26.62,
+      "change_pct": -0.9767092411720579
     },
     {
       "id": "DGS10",
@@ -39,7 +96,10 @@
       "source": "https://fred.stlouisfed.org/series/DGS10",
       "value": 4.92,
       "observation_date": "2026-11-23",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-11-20",
+      "previous_value": 4.92,
+      "change_pct": 0.0
     },
     {
       "id": "T10Y2Y",
@@ -49,7 +109,10 @@
       "source": "https://fred.stlouisfed.org/series/T10Y2Y",
       "value": 0.28,
       "observation_date": "2026-11-24",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-11-23",
+      "previous_value": 0.29,
+      "change_pct": -3.44827586206895
     },
     {
       "id": "BAA10YM",
@@ -59,7 +122,10 @@
       "source": "https://fred.stlouisfed.org/series/BAA10YM",
       "value": 1.46,
       "observation_date": "2026-10-01",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-09-01",
+      "previous_value": 1.48,
+      "change_pct": -1.3513513513513487
     },
     {
       "id": "DCOILWTICO",
@@ -69,7 +135,10 @@
       "source": "https://fred.stlouisfed.org/series/DCOILWTICO",
       "value": 89.53,
       "observation_date": "2026-11-17",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-11-16",
+      "previous_value": 89.24,
+      "change_pct": 0.3249663827879834
     },
     {
       "id": "NFCI",
@@ -79,7 +148,10 @@
       "source": "https://fred.stlouisfed.org/series/NFCI",
       "value": -0.444,
       "observation_date": "2026-11-20",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-11-13",
+      "previous_value": -0.45,
+      "change_pct": -1.3333333333333308
     },
     {
       "id": "STLFSI4",
@@ -89,7 +161,10 @@
       "source": "https://fred.stlouisfed.org/series/STLFSI4",
       "value": -0.8655,
       "observation_date": "2026-11-13",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-11-06",
+      "previous_value": -0.4901,
+      "change_pct": 76.59661293613549
     },
     {
       "id": "UMCSENT",
@@ -99,7 +174,10 @@
       "source": "https://fred.stlouisfed.org/series/UMCSENT",
       "value": 48.0,
       "observation_date": "2026-10-01",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-09-01",
+      "previous_value": 48.1,
+      "change_pct": -0.20790020790021346
     },
     {
       "id": "USEPUINDXM",
@@ -109,7 +187,10 @@
       "source": "https://fred.stlouisfed.org/series/USEPUINDXM",
       "value": 157.04317,
       "observation_date": "2026-10-01",
-      "status": "available"
+      "status": "available",
+      "previous_date": "2026-09-01",
+      "previous_value": 168.58519,
+      "change_pct": -6.846402106851734
     }
   ],
   "note": "Latest published observations, not real-time quotes. Monthly dates identify the observation period; releases can lag and be revised."
