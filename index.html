@@ -94,6 +94,43 @@
   .mini-bar i { display:block; height:100%; background:var(--accent); }
   .note { color:#a9b4af; font-size:.78rem; line-height:1.45; margin-top:.7rem; }
   @media (max-width: 850px) { .ensemble-grid { grid-template-columns:1fr; } }
+
+  /* Center the dashboard and keep cards aligned across viewport sizes. */
+  header { max-width:1200px; margin:0 auto; justify-content:center; text-align:center; flex-direction:column; gap:.45rem; }
+  .wrap { width:100%; margin-inline:auto; }
+  .card { min-width:0; text-align:center; }
+  .card h2 { text-align:center; line-height:1.45; }
+  .grid, .ensemble-grid { grid-template-columns:repeat(2,minmax(0,1fr)); align-items:stretch; }
+  .gauge-wrap { justify-content:center; align-items:center; gap:1.25rem; }
+  .gauge-wrap > div:not(.gauge) { min-width:0; max-width:100%; }
+  .gauge { flex-shrink:0; }
+  .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .metric { min-width:0; overflow-wrap:anywhere; text-align:center; }
+  .drivers,.model-list,#gainers,#losers { width:100%; max-width:680px; margin-inline:auto; }
+  .driver,.model-row { text-align:left; padding:.35rem 0; min-width:0; }
+  .driver > :first-child,.model-row > :first-child { min-width:0; overflow-wrap:anywhere; }
+  .driver > :last-child { white-space:nowrap; text-align:right; }
+  .actions { justify-content:center; }
+  .inputs { text-align:left; }
+  .inputs input { width:100%; min-width:0; }
+  .note,.disclaimer { max-width:920px; margin-inline:auto; }
+  #moverNote { text-align:center; margin-block:0; }
+  #histChart { margin-inline:auto; }
+  table { min-width:560px; }
+  table th,table td { padding:.35rem .65rem; text-align:center; vertical-align:middle; }
+  table th:first-child,table td:first-child { text-align:left; }
+  @media(max-width:900px) { .grid,.ensemble-grid { grid-template-columns:minmax(0,1fr); } }
+  @media(max-width:480px) {
+    .wrap { padding:.75rem; gap:.75rem; }
+    .card { padding:.9rem; border-radius:12px; }
+    header { padding:1rem .75rem; }
+    .gauge-wrap { flex-direction:column; }
+    .gauge-wrap > div:not(.gauge) { width:100%; }
+    .metric .v { font-size:.95rem; }
+    .model-row { grid-template-columns:minmax(0,1fr) auto auto; font-size:.76rem; }
+    .actions button { flex:1 1 140px; }
+  }
+
 </style>
 </head>
 <body>
