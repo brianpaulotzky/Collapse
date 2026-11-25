@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: python -m pip install pandas xlrd openpyxl lxml
       - run: python refresh_market.py
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
