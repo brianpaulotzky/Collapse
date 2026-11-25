@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T17:36:15.640143+00:00",
+  "fetched_at": "2026-11-25T17:48:22.323413+00:00",
   "observations": [
     {
       "id": "T10Y3M",
@@ -57,7 +57,7 @@
       "id": "GDP",
       "label": "Nominal GDP",
       "unit": "USD billions",
-      "max_age_days": 150,
+      "max_age_days": 240,
       "source": "https://fred.stlouisfed.org/series/GDP",
       "value": 33056.203,
       "observation_date": "2026-07-01",
@@ -65,6 +65,19 @@
       "previous_date": "2026-04-01",
       "previous_value": 32563.03,
       "change_pct": 1.5145181514128137
+    },
+    {
+      "id": "BOGZ1LM883164115Q",
+      "label": "Domestic public corporate equity market value",
+      "unit": "USD millions",
+      "max_age_days": 240,
+      "source": "https://fred.stlouisfed.org/series/BOGZ1LM883164115Q",
+      "value": 93607725.0,
+      "observation_date": "2026-04-01",
+      "status": "available",
+      "previous_date": "2026-01-01",
+      "previous_value": 80266112.0,
+      "change_pct": 16.6217257414935
     },
     {
       "id": "NCBEILQ027S",
@@ -237,12 +250,12 @@
       "unit": "index",
       "max_age_days": 21,
       "source": "https://fred.stlouisfed.org/series/STLFSI4",
-      "value": -0.8655,
-      "observation_date": "2026-11-13",
+      "value": -0.0697,
+      "observation_date": "2026-11-20",
       "status": "available",
-      "previous_date": "2026-11-06",
-      "previous_value": -0.4901,
-      "change_pct": 76.59661293613549
+      "previous_date": "2026-11-13",
+      "previous_value": -0.8658,
+      "change_pct": -91.94964194964194
     },
     {
       "id": "UMCSENT",
@@ -269,6 +282,16 @@
       "previous_date": "2026-09-01",
       "previous_value": 168.58519,
       "change_pct": -6.846402106851734
+    },
+    {
+      "id": "BUFFETT",
+      "label": "Public domestic equity / GDP (Fed proxy)",
+      "source": "https://fred.stlouisfed.org/series/BOGZ1LM883164115Q",
+      "observation_date": "2026-04-01",
+      "value": 287.466261585608,
+      "max_age_days": 240,
+      "unit": "%",
+      "status": "available"
     }
   ],
   "note": "Latest published observations, not real-time quotes. Monthly dates identify the observation period; releases can lag and be revised."
