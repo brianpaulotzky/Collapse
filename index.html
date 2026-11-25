@@ -7,21 +7,21 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0b1220;
-    --panel: #121a2b;
-    --border: #243049;
-    --text: #e8eef9;
-    --muted: #8b9bb8;
-    --accent: #5b8cff;
-    --low: #3dd68c;
-    --elevated: #f5c542;
-    --high: #ff8b4a;
-    --severe: #ff4d6d;
+    --bg: #080909;
+    --panel: #141616;
+    --border: #303634;
+    --text: #f5f7f6;
+    --muted: #a9b4af;
+    --accent: #f5bd42;
+    --low: #28df91;
+    --elevated: #f5bd42;
+    --high: #f5bd42;
+    --severe: #ff5969;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; font-family: "Segoe UI", system-ui, sans-serif;
-    background: radial-gradient(1200px 600px at 10% -10%, #1a2744 0%, var(--bg) 50%);
+    background: radial-gradient(1200px 600px at 10% -10%, #17251e 0%, var(--bg) 50%);
     color: var(--text); min-height: 100vh;
   }
   header {
@@ -41,7 +41,7 @@
   .gauge-wrap { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
   .gauge {
     width: 140px; height: 140px; border-radius: 50%;
-    background: conic-gradient(var(--gcolor) calc(var(--pct) * 1%), #1e2a40 0);
+    background: conic-gradient(var(--gcolor) calc(var(--pct) * 1%), #29322e 0);
     display: grid; place-items: center; position: relative;
   }
   .gauge::before {
@@ -59,22 +59,22 @@
   .High { background: rgba(255,139,74,.15); color: var(--high); }
   .Severe { background: rgba(255,77,109,.15); color: var(--severe); }
   .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; flex: 1; }
-  .metric { background: #0e1626; border-radius: 10px; padding: 0.65rem 0.75rem; }
+  .metric { background: #0b100e; border-radius: 10px; padding: 0.65rem 0.75rem; }
   .metric .k { color: var(--muted); font-size: 0.75rem; }
   .metric .v { font-size: 1.05rem; font-weight: 600; margin-top: 0.15rem; }
   form.inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.65rem; }
   label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.78rem; color: var(--muted); }
   label input {
-    background: #0e1626; border: 1px solid var(--border); color: var(--text);
+    background: #0b100e; border: 1px solid var(--border); color: var(--text);
     border-radius: 8px; padding: 0.45rem 0.55rem; font-size: 0.9rem;
   }
   label input:focus { outline: 1px solid var(--accent); }
   .actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.9rem; }
   button {
-    background: var(--accent); color: white; border: 0; border-radius: 8px;
+    background: var(--accent); color: #080909; border: 0; border-radius: 8px;
     padding: 0.55rem 1rem; font-weight: 600; cursor: pointer;
   }
-  button.secondary { background: #243049; }
+  button.secondary { background: #303634; }
   button:hover { filter: brightness(1.08); }
   .disclaimer {
     color: var(--muted); font-size: 0.78rem; line-height: 1.45;
@@ -83,16 +83,16 @@
   canvas { max-height: 280px; }
   .drivers { display: grid; gap: 0.35rem; }
   .driver { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; font-size: 0.85rem; }
-  .bar { height: 8px; border-radius: 4px; background: #1e2a40; overflow: hidden; }
+  .bar { height: 8px; border-radius: 4px; background: #29322e; overflow: hidden; }
   .bar > i { display: block; height: 100%; background: var(--accent); }
 
   .ensemble-grid { display:grid; grid-template-columns: 1.2fr 1fr; gap:1rem; }
   .model-list { display:grid; gap:.55rem; }
   .model-row { display:grid; grid-template-columns: 1.2fr .65fr .65fr; gap:.5rem; align-items:center; font-size:.84rem; }
   .model-row .num { text-align:right; font-variant-numeric:tabular-nums; }
-  .mini-bar { height:7px; border-radius:4px; background:#1e2a40; overflow:hidden; }
+  .mini-bar { height:7px; border-radius:4px; background:#29322e; overflow:hidden; }
   .mini-bar i { display:block; height:100%; background:var(--accent); }
-  .note { color:#8b9bb8; font-size:.78rem; line-height:1.45; margin-top:.7rem; }
+  .note { color:#a9b4af; font-size:.78rem; line-height:1.45; margin-top:.7rem; }
   @media (max-width: 850px) { .ensemble-grid { grid-template-columns:1fr; } }
 </style>
 </head>
@@ -106,11 +106,16 @@
 </header>
 <div class="wrap">
   <section class="card">
-    <h2>Latest published market observations</h2>
-    <p class="sub" id="marketStatus" role="status">Loading source observations…</p>
-    <div style="overflow-x:auto"><table style="width:100%;text-align:left;border-spacing:0 12px"><thead><tr><th>Indicator / source</th><th>Value</th><th>Observation date</th><th>Freshness</th></tr></thead><tbody id="marketRows"></tbody></table></div>
-    <p class="note">Published daily, weekly and monthly data have different release delays. These are not real-time quotes. Monthly dates identify the observation period, not the publication date. Source releases can be revised.</p>
+    <h2>Market health index · current published conditions</h2>
+    <div class="gauge-wrap"><div class="gauge" id="healthGauge" style="--pct:0;--gcolor:var(--accent)"><div class="val"><strong id="healthScore">—</strong><span>out of 100</span></div></div><div><strong id="healthLabel">Awaiting fresh data</strong><p class="note" id="healthDetail"></p></div></div>
+    <p class="note">Equal-weight heuristic: VIX, yield curve, Chicago Fed financial conditions, St. Louis Fed financial stress and S&amp;P 500 daily return. Higher is healthier. Not a calibrated forecast.</p>
   </section>
+  <div class="grid">
+    <section class="card"><h2 style="color:var(--low)">Top 3 gaining equity indices</h2><div id="gainers">Awaiting data</div></section>
+    <section class="card"><h2 style="color:var(--severe)">Top 3 losing equity indices</h2><div id="losers">Awaiting data</div></section>
+  </div>
+  <p class="note" id="moverNote">Ranked within tracked US indices by latest comparable close-to-close return; not intraday quotes.</p>
+
 
   <div class="grid">
     <section class="card">
@@ -171,8 +176,45 @@
       <button type="button" class="secondary" id="btnReset">Reset to archived inputs</button>
     </div>
   </section>
+  <section class="card">
+    <h2>Latest published market observations</h2>
+    <p class="sub" id="marketStatus" role="status">Loading source observations…</p>
+    <div style="overflow-x:auto"><table style="width:100%;text-align:left;border-spacing:0 12px"><thead><tr><th>Indicator / source</th><th>Value</th><th>Observation date</th><th>Freshness</th></tr></thead><tbody id="marketRows"></tbody></table></div>
+    <p class="note">Published daily, weekly and monthly data have different release delays. These are not real-time quotes. Monthly dates identify the observation period, not the publication date. Source releases can be revised.</p>
+  </section>
 </div>
 <script type="module">
+function renderMarketHealth(snapshot) {
+  const items = snapshot.observations;
+  const fresh = x => x && x.status === 'available' && Number.isFinite(x.value) && (Date.now()-Date.parse(x.observation_date))/86400000 <= x.max_age_days;
+  const clamp = x => Math.max(0,Math.min(100,x));
+  const by = id => items.find(x=>x.id===id);
+  const rules = [
+    ['VIXCLS',x=>100-(x.value-12)*100/28],
+    ['T10Y2Y',x=>50+x.value*35],
+    ['NFCI',x=>50-x.value*50],
+    ['STLFSI4',x=>50-x.value*50],
+    ['SP500',x=>Number.isFinite(x.change_pct)?50+x.change_pct*15:NaN]
+  ];
+  const scores=rules.filter(([id])=>fresh(by(id))).map(([id,fn])=>fn(by(id))).filter(Number.isFinite).map(clamp);
+  const score=scores.length>=4?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):null;
+  document.getElementById('healthScore').textContent=score===null?'—':score;
+  document.getElementById('healthLabel').textContent=score===null?'Insufficient fresh inputs':score>=70?'Healthy':score>=50?'Stable':score>=30?'Caution':'Stressed';
+  document.getElementById('healthDetail').textContent=scores.length+' of 5 fresh inputs · latest published observations, not live quotes';
+  const g=document.getElementById('healthGauge');g.style.setProperty('--pct',score??0);g.style.setProperty('--gcolor',score===null?'var(--muted)':score>=50?'var(--low)':score>=30?'var(--accent)':'var(--severe)');
+  const ids=['SP500','NASDAQCOM','DJIA','NASDAQ100','WILL5000INDFC','NASDAQNMS'];
+  const eligible=items.filter(x=>ids.includes(x.id)&&fresh(x)&&Number.isFinite(x.change_pct)&&x.previous_date);
+  const latest=eligible.map(x=>x.observation_date).sort().pop();
+  const sameDay=eligible.filter(x=>x.observation_date===latest);
+  const previous=sameDay.map(x=>x.previous_date).sort().pop();
+  const comparable=sameDay.filter(x=>x.previous_date===previous);
+  for(const [id,rows] of [['gainers',comparable.filter(x=>x.change_pct>0).sort((a,b)=>b.change_pct-a.change_pct)],['losers',comparable.filter(x=>x.change_pct<0).sort((a,b)=>a.change_pct-b.change_pct)]]){
+    const el=document.getElementById(id);el.replaceChildren();
+    for(const x of rows.slice(0,3)){const row=document.createElement('div');row.className='driver';const name=document.createElement('span');name.textContent=x.label;const value=document.createElement('strong');value.style.color=x.change_pct>0?'var(--low)':'var(--severe)';value.textContent=(x.change_pct>0?'+':'')+x.change_pct.toFixed(2)+'%';row.append(name,value);el.append(row);}
+    if(!rows.length)el.textContent=comparable.length?'No indices in this direction':'No fresh comparable returns';
+  }
+  document.getElementById('moverNote').textContent=comparable.length?comparable.length+' of 6 tracked US indices · '+previous+' to '+latest+' · published closes, not intraday quotes':'Waiting for comparable published index closes.';
+}
 async function loadMarket() {
   const status = document.getElementById('marketStatus');
   try {
@@ -190,10 +232,11 @@ async function loadMarket() {
     document.getElementById('marketRows').replaceChildren();
     const age = (Date.now() - Date.parse(snapshot.fetched_at)) / 86400000;
     status.textContent = 'Source retrieval: ' + snapshot.fetched_at + (age > 2 ? ' — refresh overdue' : ' — latest successful retrieval');
+    renderMarketHealth(snapshot);
     for (const item of snapshot.observations) {
       const row = document.createElement('tr');
       const source = document.createElement('a');
-      source.href = item.source; source.textContent = item.label; source.style.color = '#8ab4ff';
+      source.href = item.source; source.textContent = item.label; source.style.color = '#28df91';
       const first = document.createElement('td'); first.append(source); row.append(first);
       const obsAge = (Date.now() - Date.parse(item.observation_date)) / 86400000;
       for (const text of [item.value == null ? 'Unavailable' : item.value.toLocaleString(undefined, {maximumFractionDigits:3}) + ' ' + item.unit,
@@ -339,14 +382,14 @@ if (typeof Chart !== 'undefined') new Chart(ctx, {
       {
         label: 'Stress composite v2',
         data: h.stress_v2,
-        borderColor: '#5b8cff',
-        backgroundColor: 'rgba(91,140,255,0.12)',
+        borderColor: '#f5bd42',
+        backgroundColor: 'rgba(245,189,66,0.12)',
         tension: 0.2, pointRadius: 0, yAxisID: 'y', borderWidth: 2,
       },
       {
         label: 'SPY drawdown %',
         data: h.drawdown,
-        borderColor: '#ff4d6d',
+        borderColor: '#ff5969',
         tension: 0.2, pointRadius: 0, yAxisID: 'y1', borderWidth: 1.5,
       }
     ]
@@ -355,12 +398,12 @@ if (typeof Chart !== 'undefined') new Chart(ctx, {
     responsive: true,
     interaction: { mode: 'index', intersect: false },
     scales: {
-      x: { ticks: { maxTicksLimit: 10, color: '#8b9bb8' }, grid: { color: '#1e2a40' } },
-      y: { title: { display: true, text: 'Stress', color: '#8b9bb8' }, ticks: { color: '#8b9bb8' }, grid: { color: '#1e2a40' } },
-      y1: { position: 'right', title: { display: true, text: 'Drawdown %', color: '#8b9bb8' }, ticks: { color: '#8b9bb8' }, grid: { drawOnChartArea: false } }
+      x: { ticks: { maxTicksLimit: 10, color: '#a9b4af' }, grid: { color: '#29322e' } },
+      y: { title: { display: true, text: 'Stress', color: '#a9b4af' }, ticks: { color: '#a9b4af' }, grid: { color: '#29322e' } },
+      y1: { position: 'right', title: { display: true, text: 'Drawdown %', color: '#a9b4af' }, ticks: { color: '#a9b4af' }, grid: { drawOnChartArea: false } }
     },
     plugins: {
-      legend: { labels: { color: '#e8eef9' } }
+      legend: { labels: { color: '#f5f7f6' } }
     }
   }
 });
