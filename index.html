@@ -147,7 +147,7 @@
 <div class="gauge-wrap"><div class="gauge" id="collapseGauge" style="--pct:0;--gcolor:var(--accent)"><div class="val"><strong id="collapseScore">—</strong><span>out of 100</span></div></div><div><strong id="collapseLabel">Awaiting data</strong><p id="collapseCoverage" class="note"></p></div></div>
 <div class="metrics" id="collapseFactors"></div>
 <div class="metrics" style="margin-top:1rem"><div class="metric"><div class="k">Bubble formation</div><div class="v" id="bubbleScore">—</div></div><div class="metric"><div class="k">Systemic breakdown</div><div class="v" id="breakdownScore">—</div></div></div>
-<p class="note">Experimental severity index, not a crash probability. Full score requires all four categories and at least 80% total weight coverage. Missing data are never imputed. Partial category scores are explicitly marked.</p>
+<p class="note">Experimental severity index, not a crash probability. When full coverage is unavailable, the gauge shows a provisional weighted average of available indicators (without contagion multiplier). Full score requires all four categories and at least 80% total weight coverage. Missing data are never imputed. Partial category scores are explicitly marked.</p>
 <details><summary>Methodology and indicator coverage</summary><div id="collapseInputs" class="drivers"></div><p class="note">Weighted base: 25% valuation, 35% credit, 25% volatility, 15% leverage. Contagion multiplier: 1 + 0.15BC/10000 + 0.20CV/10000 + 0.15VL/10000. Thresholds are provisional and not backtested.</p></details>
 </section>
 
@@ -299,11 +299,12 @@ function renderCollapse(snapshot) {
  const {B,C,V,L}=scores;const total=Object.values(coverage).reduce((a,b)=>a+b,0);
  const full=[B,C,V,L].every(x=>x!==null)&&total>=80;
  const risk=full?clamp((.25*B+.35*C+.25*V+.15*L)*(1+.15*B*C/10000+.20*C*V/10000+.15*V*L/10000)):null;
- const label=risk===null?'Insufficient data':risk<20?'Low':risk<40?'Moderate':risk<60?'Elevated':risk<80?'High':'Critical';
- document.getElementById('collapseScore').textContent=risk===null?'—':risk.toFixed(1);
+ const provisional=total>=35?specs.filter(x=>x[3]!==null).reduce((a,x)=>a+x[2]*x[3],0)/total:null;
+ const label=risk===null?(provisional===null?'Awaiting observations':'Provisional stress score · full MCBRI pending'):risk<20?'Low':risk<40?'Moderate':risk<60?'Elevated':risk<80?'High':'Critical';
+ document.getElementById('collapseScore').textContent=risk===null?(provisional===null?'—':provisional.toFixed(1)):risk.toFixed(1);
  document.getElementById('collapseLabel').textContent=label;
  document.getElementById('collapseCoverage').textContent=total+'% indicator weight available · '+specs.filter(x=>x[3]!==null).length+'/13 indicators';
- const gauge=document.getElementById('collapseGauge');gauge.style.setProperty('--pct',risk??0);gauge.style.setProperty('--gcolor',risk===null?'var(--muted)':risk<40?'var(--low)':risk<80?'var(--accent)':'var(--severe)');
+ const gauge=document.getElementById('collapseGauge');gauge.style.setProperty('--pct',risk??provisional??0);gauge.style.setProperty('--gcolor',risk===null?'var(--muted)':risk<40?'var(--low)':risk<80?'var(--accent)':'var(--severe)');
  document.getElementById('bubbleScore').textContent=B!==null&&L!==null?(.7*B+.3*L).toFixed(1):'—';
  document.getElementById('breakdownScore').textContent=C!==null&&V!==null&&L!==null?(.45*C+.35*V+.2*L).toFixed(1):'—';
 }
