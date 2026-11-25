@@ -2,6 +2,10 @@
 import csv
 import io
 import json
+import math
+import os
+import time
+from urllib.parse import urlencode
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,14 +26,32 @@ SERIES = [
     ('USEPUINDXM', 'US policy uncertainty', 'index', 65),
 ]
 
+def retrieve(sid):
+    key = os.getenv('FRED_API_KEY')
+    if key:
+        try:
+            url = 'https://api.stlouisfed.org/fred/series/observations?' + urlencode(dict(series_id=sid, api_key=key, file_type='json', sort_order='desc', limit=100))
+            with urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20) as r:
+                return [{'observation_date': x['date'], sid: x['value']} for x in json.load(r)['observations']]
+        except Exception as exc:
+            print(f'{sid}: official API failed ({type(exc).__name__})', flush=True)
+    for attempt in range(3):
+        try:
+            url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?' + urlencode(dict(id=sid, cosd=str(datetime.now(timezone.utc).date().replace(year=datetime.now(timezone.utc).year-1, day=1))))
+            with urlopen(Request(url, headers={'User-Agent': 'Mozilla/5.0', 'Accept': 'text/csv,*/*'}), timeout=20) as r:
+                return list(csv.DictReader(io.StringIO(r.read().decode('utf-8-sig'))))
+        except Exception as exc:
+            print(f'{sid}: CSV attempt {attempt+1}: {type(exc).__name__}: {exc}', flush=True)
+            if attempt == 2:
+                raise
+            time.sleep(2 ** attempt)
+
 def fetch(spec):
     sid, label, unit, max_age = spec
     result = dict(id=sid, label=label, unit=unit, max_age_days=max_age,
                   source='https://fred.stlouisfed.org/series/' + sid)
     try:
-        url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=' + sid
-        with urlopen(Request(url, headers={'User-Agent': 'CollapseMarketMonitor/2.0'}), timeout=45) as r:
-            rows = list(csv.DictReader(io.StringIO(r.read().decode())))
+        rows = retrieve(sid)
         valid = []
         today = datetime.now(timezone.utc).date()
         for row in rows:
@@ -37,19 +59,31 @@ def fetch(spec):
             try:
                 value = float(row[sid])
                 obs = datetime.strptime(date, '%Y-%m-%d').date()
-                if obs <= today:
+                if obs <= today and math.isfinite(value):
                     valid.append((date, value))
-            except (ValueError, TypeError):
+            except (ValueError, TypeError, KeyError):
                 continue
         date, value = sorted(valid)[-1]
         result.update(value=value, observation_date=date, status='available')
     except Exception as exc:
+        print(f'{sid}: {type(exc).__name__}', flush=True)
         result.update(value=None, observation_date=None, status='unavailable', error=type(exc).__name__)
     return result
 
 def main():
     with ThreadPoolExecutor(max_workers=6) as pool:
         observations = list(pool.map(fetch, SERIES))
+    dest = ROOT / 'market_snapshot.json'
+    if not any(x['status'] == 'available' for x in observations):
+        raise SystemExit('No source observations could be retrieved; existing snapshot preserved')
+    try:
+        previous = {x['id']: x for x in json.loads(dest.read_text())['observations']}
+    except (OSError, ValueError, KeyError):
+        previous = {}
+    for i, item in enumerate(observations):
+        old = previous.get(item['id'], {})
+        if item['status'] != 'available' and old.get('value') is not None:
+            observations[i] = dict(old, status='cached', error=item.get('error'))
     snapshot = dict(fetched_at=datetime.now(timezone.utc).isoformat(), observations=observations,
                     note='Latest published observations, not real-time quotes. Monthly dates identify the observation period; releases can lag and be revised.')
     dest = ROOT / 'market_snapshot.json'
