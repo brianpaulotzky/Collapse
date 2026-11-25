@@ -90,10 +90,10 @@ def valuation_inputs():
     results = []
     def item(sid, label, source, date, value, age):
         return dict(id=sid, label=label, source=source, observation_date=date,
-                    value=value, max_age_days=age, unit='ratio' if sid=='CAPE' else '%', status='available')
+                    value=value, max_age_days=age, unit='ratio' if sid=='CAPE' else 'USD millions' if sid=='MARGIN_DEBT' else '%', status='available')
     try:
-        eq = {r['observation_date']: float(r['BOGZ1LM883164115Q']) for r in retrieve('BOGZ1LM883164115Q') if r.get('BOGZ1LM883164115Q') not in (None,'.','')}
-        gdp = {r['observation_date']: float(r['GDP']) for r in retrieve('GDP') if r.get('GDP') not in (None,'.','')}
+        eq = {r.get('observation_date', r.get('DATE')): float(r['BOGZ1LM883164115Q']) for r in retrieve('BOGZ1LM883164115Q') if r.get('BOGZ1LM883164115Q') not in (None,'.','')}
+        gdp = {r.get('observation_date', r.get('DATE')): float(r['GDP']) for r in retrieve('GDP') if r.get('GDP') not in (None,'.','')}
         d = max(k for k in eq.keys() & gdp.keys() if gdp[k]>0 and eq[k]>0 and k<=str(datetime.now(timezone.utc).date()))
         results.append(item('BUFFETT','Public domestic equity / GDP (Fed proxy)','https://fred.stlouisfed.org/series/BOGZ1LM883164115Q',d,eq[d]/gdp[d]/10,240))
     except Exception as exc:
@@ -116,6 +116,51 @@ def valuation_inputs():
         results.append(item('CAPE','Shiller CAPE',url,date,value,100))
     except Exception as exc:
         print('CAPE:',type(exc).__name__,flush=True)
+    try:
+        import pandas as pd
+        from urllib.parse import urljoin
+        import re
+        page='https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics'
+        with urlopen(Request(page,headers={'User-Agent':'Mozilla/5.0'}),timeout=30) as r:
+            markup=r.read().decode('utf-8')
+        links=re.findall(r'href=["\x27]([^"\x27]+\\.xlsx(?:\\?[^"\x27]*)?)["\x27]',markup,re.I)
+        url=urljoin(page,next(x for x in links if 'margin' in x.lower()))
+        with urlopen(Request(url,headers={'User-Agent':'Mozilla/5.0'}),timeout=30) as r:
+            sheet=pd.read_excel(io.BytesIO(r.read()),header=None)
+        debt={}
+        for row in sheet.itertuples(index=False,name=None):
+            try:
+                if isinstance(row[0],(int,float)): continue
+                d=pd.to_datetime(row[0],errors='raise').strftime('%Y-%m')
+                v=float(str(row[1]).replace(',',''))
+                if 0<v and d<=datetime.now(timezone.utc).strftime('%Y-%m'): debt[d]=v
+            except (ValueError,TypeError,IndexError): pass
+        series=pd.Series(debt,dtype=float).sort_index()
+        series.index=pd.PeriodIndex(series.index,freq='M')
+        series=series.asfreq('M')
+        if len(series.dropna())<36 or pd.isna(series.iloc[-1]): raise ValueError('Insufficient margin history')
+        date=str(series.index[-1].start_time.date())
+        results.append(item('MARGIN_DEBT','FINRA margin debit balances (USD millions)',url,date,float(series.iloc[-1]),100))
+        growth=series.pct_change(12,fill_method=None)
+        contraction=(-series.pct_change(3,fill_method=None)).clip(lower=0)*growth.shift(3).clip(lower=0)
+        def percentile(x):
+            x=x.dropna()
+            if len(x)<24: raise ValueError('Insufficient history')
+            return float(100*(x.iloc[:-1]<=x.iloc[-1]).mean()) if x.iloc[-1]>0 else 0.0
+        if pd.notna(contraction.iloc[-1]):
+            results.append(item('MARGIN_CONTRACTION_PCTL','Margin contraction after expansion percentile',url,date,percentile(contraction),100))
+        # Normalize against matched-quarter public equity market value, no future quarters.
+        eq_series=pd.Series(eq,dtype=float)
+        eq_series.index=pd.PeriodIndex(pd.to_datetime(eq_series.index),freq='Q')
+        ratios=[]
+        for period,amount in series.dropna().items():
+            q=period.asfreq('Q')-1
+            if q in eq_series.index and eq_series[q]>0: ratios.append((period,amount/eq_series[q]))
+        if len(ratios)>=25 and ratios[-1][0]==series.index[-1]:
+            values=pd.Series([v for _,v in ratios])
+            results.append(item('MARGIN_INTENSITY_PCTL','Margin debt / lagged public equity percentile',url,date,percentile(values),100))
+    except Exception as exc:
+        print('FINRA:',type(exc).__name__,flush=True)
     return results
 
 def main():
