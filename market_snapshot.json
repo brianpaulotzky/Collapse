@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-17T04:41:01.259241+00:00",
+  "fetched_at": "2026-11-25T14:22:38.364449+00:00",
   "observations": [
     {
       "id": "SP500",
@@ -7,8 +7,8 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/SP500",
-      "value": 7416.59,
-      "observation_date": "2026-11-16",
+      "value": 7237.17,
+      "observation_date": "2026-11-23",
       "status": "available"
     },
     {
@@ -17,8 +17,8 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/NASDAQCOM",
-      "value": 25136.27,
-      "observation_date": "2026-11-13",
+      "value": 23733.54,
+      "observation_date": "2026-11-24",
       "status": "available"
     },
     {
@@ -27,8 +27,8 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 19.3,
-      "observation_date": "2026-11-13",
+      "value": 26.62,
+      "observation_date": "2026-11-23",
       "status": "available"
     },
     {
@@ -37,8 +37,8 @@
       "unit": "%",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/DGS10",
-      "value": 5.15,
-      "observation_date": "2026-11-13",
+      "value": 4.92,
+      "observation_date": "2026-11-23",
       "status": "available"
     },
     {
@@ -47,8 +47,8 @@
       "unit": "percentage points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/T10Y2Y",
-      "value": 0.29,
-      "observation_date": "2026-11-16",
+      "value": 0.28,
+      "observation_date": "2026-11-24",
       "status": "available"
     },
     {
@@ -67,8 +67,8 @@
       "unit": "USD/barrel",
       "max_age_days": 10,
       "source": "https://fred.stlouisfed.org/series/DCOILWTICO",
-      "value": 89.62,
-      "observation_date": "2026-11-11",
+      "value": 89.53,
+      "observation_date": "2026-11-17",
       "status": "available"
     },
     {
@@ -77,8 +77,8 @@
       "unit": "index",
       "max_age_days": 21,
       "source": "https://fred.stlouisfed.org/series/NFCI",
-      "value": -0.462,
-      "observation_date": "2026-11-06",
+      "value": -0.444,
+      "observation_date": "2026-11-20",
       "status": "available"
     },
     {
@@ -87,8 +87,8 @@
       "unit": "index",
       "max_age_days": 21,
       "source": "https://fred.stlouisfed.org/series/STLFSI4",
-      "value": -0.4918,
-      "observation_date": "2026-11-06",
+      "value": -0.8655,
+      "observation_date": "2026-11-13",
       "status": "available"
     },
     {
@@ -97,8 +97,8 @@
       "unit": "index",
       "max_age_days": 65,
       "source": "https://fred.stlouisfed.org/series/UMCSENT",
-      "value": 48.1,
-      "observation_date": "2026-09-01",
+      "value": 48.0,
+      "observation_date": "2026-10-01",
       "status": "available"
     },
     {
