@@ -13,6 +13,12 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 SERIES = [
+    ('T10Y3M', '10Y–3M Treasury spread', 'percentage points', 7),
+    ('BAMLH0A0HYM2', 'High-yield credit spread', 'percentage points', 7),
+    ('VXVCLS', 'CBOE 3-month volatility index', 'index points', 7),
+    ('DFII10', '10-year real Treasury yield', '%', 7),
+    ('GDP', 'Nominal GDP', 'USD billions', 150),
+    ('NCBEILQ027S', 'Nonfinancial corporate equity liabilities (proxy only)', 'USD millions', 150),
     ('DJIA', 'Dow Jones Industrial Average', 'index points', 7),
     ('NASDAQ100', 'Nasdaq 100', 'index points', 7),
     ('WILL5000INDFC', 'Wilshire 5000', 'index points', 7),
