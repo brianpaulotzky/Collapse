@@ -1,7 +1,7 @@
 name: Refresh published market observations
 on:
   schedule:
-    - cron: '30 23 * * 1-5'
+    - cron: '17,47 * * * 1-5'
   workflow_dispatch:
 permissions:
   contents: write
@@ -18,6 +18,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python refresh_market.py
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       - name: Commit observations
         run: |
           git config user.name 'github-actions[bot]'
