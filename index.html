@@ -173,6 +173,42 @@
   </section>
 </div>
 <script type="module">
+async function loadMarket() {
+  const status = document.getElementById('marketStatus');
+  try {
+    const response = await fetch('market_snapshot.json', {cache:'no-store'});
+    if (!response.ok) throw new Error('Snapshot unavailable');
+    let snapshot = await response.json();
+    // Fetch the latest committed snapshot independently of Pages deployment lag.
+    try {
+      const latest = await fetch('https://raw.githubusercontent.com/brianpaulotzky/Collapse/main/market_snapshot.json?t='+Date.now(), {cache:'no-store', signal:AbortSignal.timeout(8000)});
+      if (latest.ok) {
+        const candidate = await latest.json();
+        if (Date.parse(candidate.fetched_at) > Date.parse(snapshot.fetched_at)) snapshot = candidate;
+      }
+    } catch (_) {}
+    document.getElementById('marketRows').replaceChildren();
+    const age = (Date.now() - Date.parse(snapshot.fetched_at)) / 86400000;
+    status.textContent = 'Source retrieval: ' + snapshot.fetched_at + (age > 2 ? ' — refresh overdue' : ' — latest successful retrieval');
+    for (const item of snapshot.observations) {
+      const row = document.createElement('tr');
+      const source = document.createElement('a');
+      source.href = item.source; source.textContent = item.label; source.style.color = '#8ab4ff';
+      const first = document.createElement('td'); first.append(source); row.append(first);
+      const obsAge = (Date.now() - Date.parse(item.observation_date)) / 86400000;
+      for (const text of [item.value == null ? 'Unavailable' : item.value.toLocaleString(undefined, {maximumFractionDigits:3}) + ' ' + item.unit,
+          item.observation_date || '—', item.value == null ? 'Source unavailable' : obsAge > item.max_age_days ? 'Older observation — check source' : item.status === 'cached' ? 'Cached — source refresh failed' : 'Within expected release window']) {
+        const cell = document.createElement('td'); cell.textContent = text; row.append(cell);
+      }
+      document.getElementById('marketRows').append(row);
+    }
+  } catch (error) { status.textContent = 'Market data unavailable. No current values can be verified.'; }
+}
+loadMarket();
+setInterval(loadMarket, 300000);
+
+
+
 const response = await fetch('risk_dashboard_data.json', {cache:'no-store'});
 if (!response.ok) throw new Error('Historical model data unavailable');
 const DATA = await response.json();
@@ -285,29 +321,6 @@ function renderCurrentEnsemble(){
   drivers.innerHTML=Object.entries(comps).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([name,v])=>`<div class="driver"><div><div>${name}</div><div class="bar"><i style="width:${Math.min(100,v*100)}%;background:var(--accent)"></i></div></div><div style="color:var(--accent);font-variant-numeric:tabular-nums">${(v*100).toFixed(1)}%</div></div>`).join('');
 }
 
-async function loadMarket() {
-  const status = document.getElementById('marketStatus');
-  try {
-    const response = await fetch('market_snapshot.json', {cache:'no-store'});
-    if (!response.ok) throw new Error('Snapshot unavailable');
-    const snapshot = await response.json();
-    const age = (Date.now() - Date.parse(snapshot.fetched_at)) / 86400000;
-    status.textContent = 'Source retrieval: ' + snapshot.fetched_at + (age > 2 ? ' — refresh overdue' : ' — latest successful retrieval');
-    for (const item of snapshot.observations) {
-      const row = document.createElement('tr');
-      const source = document.createElement('a');
-      source.href = item.source; source.textContent = item.label; source.style.color = '#8ab4ff';
-      const first = document.createElement('td'); first.append(source); row.append(first);
-      const obsAge = (Date.now() - Date.parse(item.observation_date)) / 86400000;
-      for (const text of [item.value == null ? 'Unavailable' : item.value.toLocaleString(undefined, {maximumFractionDigits:3}) + ' ' + item.unit,
-          item.observation_date || '—', item.value == null ? 'Source unavailable' : obsAge > item.max_age_days ? 'Older observation — check source' : 'Within expected release window']) {
-        const cell = document.createElement('td'); cell.textContent = text; row.append(cell);
-      }
-      document.getElementById('marketRows').append(row);
-    }
-  } catch (error) { status.textContent = 'Market data unavailable. No current values can be verified.'; }
-}
-loadMarket();
 buildForm();
 renderCurrentEnsemble();
 renderEnsemblePanel();
