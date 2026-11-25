@@ -17,7 +17,8 @@ SERIES = [
     ('BAMLH0A0HYM2', 'High-yield credit spread', 'percentage points', 7),
     ('VXVCLS', 'CBOE 3-month volatility index', 'index points', 7),
     ('DFII10', '10-year real Treasury yield', '%', 7),
-    ('GDP', 'Nominal GDP', 'USD billions', 150),
+    ('GDP', 'Nominal GDP', 'USD billions', 240),
+    ('BOGZ1LM883164115Q', 'Domestic public corporate equity market value', 'USD millions', 240),
     ('NCBEILQ027S', 'Nonfinancial corporate equity liabilities (proxy only)', 'USD millions', 150),
     ('DJIA', 'Dow Jones Industrial Average', 'index points', 7),
     ('NASDAQ100', 'Nasdaq 100', 'index points', 7),
@@ -85,9 +86,42 @@ def fetch(spec):
         result.update(value=None, observation_date=None, status='unavailable', error=type(exc).__name__)
     return result
 
+def valuation_inputs():
+    results = []
+    def item(sid, label, source, date, value, age):
+        return dict(id=sid, label=label, source=source, observation_date=date,
+                    value=value, max_age_days=age, unit='ratio' if sid=='CAPE' else '%', status='available')
+    try:
+        eq = {r['observation_date']: float(r['BOGZ1LM883164115Q']) for r in retrieve('BOGZ1LM883164115Q') if r.get('BOGZ1LM883164115Q') not in (None,'.','')}
+        gdp = {r['observation_date']: float(r['GDP']) for r in retrieve('GDP') if r.get('GDP') not in (None,'.','')}
+        d = max(k for k in eq.keys() & gdp.keys() if gdp[k]>0 and eq[k]>0 and k<=str(datetime.now(timezone.utc).date()))
+        results.append(item('BUFFETT','Public domestic equity / GDP (Fed proxy)','https://fred.stlouisfed.org/series/BOGZ1LM883164115Q',d,eq[d]/gdp[d]/10,240))
+    except Exception as exc:
+        print('BUFFETT:',type(exc).__name__,flush=True)
+    try:
+        # Shiller workbook: use actual published CAPE, never padded zero values.
+        import pandas as pd
+        url='https://www.econ.yale.edu/~shiller/data/ie_data.xls'
+        with urlopen(Request(url,headers={'User-Agent':'Mozilla/5.0'}),timeout=30) as r:
+            frame=pd.read_excel(io.BytesIO(r.read()),sheet_name='Data',header=None,engine='xlrd')
+        found=[]
+        for row in frame.itertuples(index=False,name=None):
+            try:
+                raw=float(row[0]); year=int(raw); month=round((raw-year)*100)
+                date=datetime(year,month,1).date()
+                value=float(row[12])
+                if 0<value<150 and date<=datetime.now(timezone.utc).date(): found.append((str(date),value))
+            except (ValueError,TypeError,OverflowError,IndexError): pass
+        date,value=max(found)
+        results.append(item('CAPE','Shiller CAPE',url,date,value,100))
+    except Exception as exc:
+        print('CAPE:',type(exc).__name__,flush=True)
+    return results
+
 def main():
     with ThreadPoolExecutor(max_workers=6) as pool:
         observations = list(pool.map(fetch, SERIES))
+    observations.extend(valuation_inputs())
     dest = ROOT / 'market_snapshot.json'
     if not any(x['status'] == 'available' for x in observations):
         raise SystemExit('No source observations could be retrieved; existing snapshot preserved')
