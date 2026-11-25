@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T17:48:22.323413+00:00",
+  "fetched_at": "2026-11-25T23:08:21.647894+00:00",
   "observations": [
     {
       "id": "T10Y3M",
@@ -7,12 +7,12 @@
       "unit": "percentage points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/T10Y3M",
-      "value": 0.55,
-      "observation_date": "2026-11-24",
+      "value": 0.51,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
+      "previous_date": "2026-11-24",
       "previous_value": 0.55,
-      "change_pct": 0.0
+      "change_pct": -7.272727272727275
     },
     {
       "id": "BAMLH0A0HYM2",
@@ -41,19 +41,6 @@
       "change_pct": -0.11764705882353343
     },
     {
-      "id": "DFII10",
-      "label": "10-year real Treasury yield",
-      "unit": "%",
-      "max_age_days": 7,
-      "source": "https://fred.stlouisfed.org/series/DFII10",
-      "value": 2.79,
-      "observation_date": "2026-11-23",
-      "status": "available",
-      "previous_date": "2026-11-20",
-      "previous_value": 2.77,
-      "change_pct": 0.7220216606498298
-    },
-    {
       "id": "GDP",
       "label": "Nominal GDP",
       "unit": "USD billions",
@@ -80,30 +67,17 @@
       "change_pct": 16.6217257414935
     },
     {
-      "id": "NCBEILQ027S",
-      "label": "Nonfinancial corporate equity liabilities (proxy only)",
-      "unit": "USD millions",
-      "max_age_days": 150,
-      "source": "https://fred.stlouisfed.org/series/NCBEILQ027S",
-      "value": 83050847.0,
-      "observation_date": "2026-04-01",
-      "status": "available",
-      "previous_date": "2026-01-01",
-      "previous_value": 70018384.0,
-      "change_pct": 18.61291600217452
-    },
-    {
       "id": "DJIA",
       "label": "Dow Jones Industrial Average",
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/DJIA",
-      "value": 50018.7,
-      "observation_date": "2026-11-24",
+      "value": 50182.95,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 49595.31,
-      "change_pct": 0.8536895928264121
+      "previous_date": "2026-11-24",
+      "previous_value": 50018.7,
+      "change_pct": 0.32837718693208284
     },
     {
       "id": "NASDAQ100",
@@ -117,28 +91,6 @@
       "previous_date": "2026-11-23",
       "previous_value": 26746.1,
       "change_pct": -1.988813322316152
-    },
-    {
-      "id": "WILL5000INDFC",
-      "label": "Wilshire 5000",
-      "unit": "index points",
-      "max_age_days": 7,
-      "source": "https://fred.stlouisfed.org/series/WILL5000INDFC",
-      "value": null,
-      "observation_date": null,
-      "status": "unavailable",
-      "error": "TimeoutError"
-    },
-    {
-      "id": "NASDAQNMS",
-      "label": "Nasdaq Global Market Composite",
-      "unit": "index points",
-      "max_age_days": 7,
-      "source": "https://fred.stlouisfed.org/series/NASDAQNMS",
-      "value": null,
-      "observation_date": null,
-      "status": "unavailable",
-      "error": "TimeoutError"
     },
     {
       "id": "SP500",
@@ -185,12 +137,12 @@
       "unit": "%",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/DGS10",
-      "value": 4.92,
-      "observation_date": "2026-11-23",
+      "value": 4.91,
+      "observation_date": "2026-11-24",
       "status": "available",
-      "previous_date": "2026-11-20",
+      "previous_date": "2026-11-23",
       "previous_value": 4.92,
-      "change_pct": 0.0
+      "change_pct": -0.20325203252031798
     },
     {
       "id": "T10Y2Y",
@@ -198,12 +150,12 @@
       "unit": "percentage points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/T10Y2Y",
-      "value": 0.28,
-      "observation_date": "2026-11-24",
+      "value": 0.24,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 0.29,
-      "change_pct": -3.44827586206895
+      "previous_date": "2026-11-24",
+      "previous_value": 0.28,
+      "change_pct": -14.285714285714302
     },
     {
       "id": "BAA10YM",
@@ -224,12 +176,12 @@
       "unit": "USD/barrel",
       "max_age_days": 10,
       "source": "https://fred.stlouisfed.org/series/DCOILWTICO",
-      "value": 89.53,
-      "observation_date": "2026-11-17",
+      "value": 82.24,
+      "observation_date": "2026-11-24",
       "status": "available",
-      "previous_date": "2026-11-16",
-      "previous_value": 89.24,
-      "change_pct": 0.3249663827879834
+      "previous_date": "2026-11-23",
+      "previous_value": 81.42,
+      "change_pct": 1.00712355686563
     },
     {
       "id": "NFCI",
