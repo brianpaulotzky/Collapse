@@ -143,12 +143,12 @@
 </header>
 <div class="wrap">
 <section class="card">
-<h2>Market Collapse &amp; Bubble Risk Index · V1</h2>
+<h2>Market Collapse &amp; Bubble Risk Index · V1.3</h2>
 <div class="gauge-wrap"><div class="gauge" id="collapseGauge" style="--pct:0;--gcolor:var(--accent)"><div class="val"><strong id="collapseScore">—</strong><span>out of 100</span></div></div><div><strong id="collapseLabel">Awaiting data</strong><p id="collapseCoverage" class="note"></p></div></div>
 <div class="metrics" id="collapseFactors"></div>
-<div class="metrics" style="margin-top:1rem"><div class="metric"><div class="k">Bubble formation</div><div class="v" id="bubbleScore">—</div></div><div class="metric"><div class="k">Systemic breakdown</div><div class="v" id="breakdownScore">—</div></div></div>
-<p class="note">Experimental severity index, not a crash probability. When full coverage is unavailable, the gauge shows a provisional weighted average of available indicators (without contagion multiplier). Full score requires all four categories and at least 80% total weight coverage. Missing data are never imputed. Partial category scores are explicitly marked.</p>
-<details><summary>Methodology and indicator coverage</summary><div id="collapseInputs" class="drivers"></div><p class="note">Weighted base: 25% valuation, 35% credit, 25% volatility, 15% leverage. Contagion multiplier: 1 + 0.15BC/10000 + 0.20CV/10000 + 0.15VL/10000. Thresholds are provisional and not backtested.</p></details>
+<div class="metrics" style="margin-top:1rem"><div class="metric"><div class="k">Valuation risk proxy</div><div class="v" id="bubbleScore">—</div></div><div class="metric"><div class="k">Systemic breakdown</div><div class="v" id="breakdownScore">—</div></div></div>
+<p class="note">Experimental severity index, not a crash probability. When full coverage is unavailable, the gauge shows a provisional weighted average of available indicators (without contagion multiplier). Full reduced-model score requires all seven indicators. CAPE, breadth and leverage are excluded because sources were not verified. Missing data are never imputed. Partial category scores are explicitly marked.</p>
+<details><summary>Methodology and indicator coverage</summary><div id="collapseInputs" class="drivers"></div><p class="note">Weighted base: 25% valuation proxy, 45% credit, 30% volatility. Contagion multiplier: 1 + 0.15BC/10000 + 0.20CV/10000. Thresholds are provisional and not backtested.</p></details>
 </section>
 
   <section class="card">
@@ -267,25 +267,17 @@ function renderCollapse(snapshot) {
  const get=id=>{const x=by(id);const age=x?(Date.now()-Date.parse(x.observation_date))/86400000:Infinity;return x&&x.status==='available'&&Number.isFinite(x.value)&&age>=-1&&age<=x.max_age_days?x.value:null;};
  const scale=(v,a,b)=>v===null?null:clamp(100*(v-a)/(b-a));
  const ratio=(a,b)=>a===null||b===null||b===0?null:a/b;
- const cape=get('CAPE'), real=get('DFII10');
- const erp=cape!==null&&cape>0&&real!==null?100/cape-real:null;
  const curve=[get('T10Y2Y'),get('T10Y3M')].filter(x=>x!==null);
  const specs=[
- ['B','CAPE',10,scale(cape,20,40)],
- ['B','Buffett indicator',8,scale(get('BUFFETT'),100,200)],
- ['B','CAPE yield minus real Treasury yield',7,scale(erp,4,0)],
- ['C','Yield curve inversion',8,scale(curve.length?Math.min(...curve):null,1,-1)],
- ['C','High-yield spread',12,scale(get('BAMLH0A0HYM2'),3,8)],
- ['C','Financial stress',8,scale(get('STLFSI4'),0,1.5)],
- ['C','Financial conditions',7,scale(get('NFCI'),0,.5)],
- ['V','VIX',7,scale(get('VIXCLS'),15,40)],
- ['V','VIX / VIX3M',6,scale(ratio(get('VIXCLS'),get('VXVCLS')),.9,1.1)],
- ['V','Advance-decline divergence percentile',6,scale(get('AD_DIVERGENCE_PCTL'),0,100)],
- ['V','Stocks above 200-day MA (%)',6,scale(get('BREADTH200'),65,20)],
- ['L','Margin debt intensity percentile',8,scale(get('MARGIN_INTENSITY_PCTL'),0,100)],
- ['L','Margin contraction after expansion percentile',7,scale(get('MARGIN_CONTRACTION_PCTL'),0,100)]
+ ['B','Public equity / GDP proxy',25,scale(get('BUFFETT'),100,200)],
+ ['C','Yield curve inversion',10,scale(curve.length?Math.min(...curve):null,1,-1)],
+ ['C','High-yield spread',16,scale(get('BAMLH0A0HYM2'),3,8)],
+ ['C','Financial stress',10,scale(get('STLFSI4'),0,1.5)],
+ ['C','Financial conditions',9,scale(get('NFCI'),0,.5)],
+ ['V','VIX',16,scale(get('VIXCLS'),15,40)],
+ ['V','VIX / VIX3M',14,scale(ratio(get('VIXCLS'),get('VXVCLS')),.9,1.1)],
  ];
- const categories={B:['Valuation',25],C:['Credit stress',35],V:['Volatility & internals',25],L:['Leverage',15]};
+ const categories={B:['Valuation proxy',25],C:['Credit stress',45],V:['Volatility',30]};
  const scores={}, coverage={};
  const factors=document.getElementById('collapseFactors');factors.replaceChildren();
  const inputs=document.getElementById('collapseInputs');inputs.replaceChildren();
@@ -296,17 +288,17 @@ function renderCollapse(snapshot) {
  scores[k]=weight>=total*.5?rows.reduce((a,x)=>a+x[2]*x[3],0)/weight:null;
  const card=document.createElement('div');card.className='metric';const title=document.createElement('div');title.className='k';title.textContent=label;const value=document.createElement('div');value.className='v';value.textContent=scores[k]===null?'—':scores[k].toFixed(1);const note=document.createElement('div');note.className='note';note.textContent=weight+'/'+total+' weight available'+(weight<total?' · partial':'');card.append(title,value,note);factors.append(card);
  }
- const {B,C,V,L}=scores;const total=Object.values(coverage).reduce((a,b)=>a+b,0);
- const full=[B,C,V,L].every(x=>x!==null)&&total>=80;
- const risk=full?clamp((.25*B+.35*C+.25*V+.15*L)*(1+.15*B*C/10000+.20*C*V/10000+.15*V*L/10000)):null;
+ const {B,C,V}=scores;const total=Object.values(coverage).reduce((a,b)=>a+b,0);
+ const full=[B,C,V].every(x=>x!==null)&&total===100;
+ const risk=full?clamp((.25*B+.45*C+.30*V)*(1+.15*B*C/10000+.20*C*V/10000)):null;
  const provisional=total>=35?specs.filter(x=>x[3]!==null).reduce((a,x)=>a+x[2]*x[3],0)/total:null;
  const label=risk===null?(provisional===null?'Awaiting observations':'Provisional stress score · full MCBRI pending'):risk<20?'Low':risk<40?'Moderate':risk<60?'Elevated':risk<80?'High':'Critical';
  document.getElementById('collapseScore').textContent=risk===null?(provisional===null?'—':provisional.toFixed(1)):risk.toFixed(1);
  document.getElementById('collapseLabel').textContent=label;
- document.getElementById('collapseCoverage').textContent=total+'% indicator weight available · '+specs.filter(x=>x[3]!==null).length+'/13 indicators';
+ document.getElementById('collapseCoverage').textContent=total+'% indicator weight available · '+specs.filter(x=>x[3]!==null).length+'/7 indicators';
  const gauge=document.getElementById('collapseGauge');gauge.style.setProperty('--pct',risk??provisional??0);gauge.style.setProperty('--gcolor',risk===null?'var(--muted)':risk<40?'var(--low)':risk<80?'var(--accent)':'var(--severe)');
- document.getElementById('bubbleScore').textContent=B!==null&&L!==null?(.7*B+.3*L).toFixed(1):'—';
- document.getElementById('breakdownScore').textContent=C!==null&&V!==null&&L!==null?(.45*C+.35*V+.2*L).toFixed(1):'—';
+ document.getElementById('bubbleScore').textContent=B!==null?B.toFixed(1):'—';
+ document.getElementById('breakdownScore').textContent=C!==null&&V!==null?(.6*C+.4*V).toFixed(1):'—';
 }
 
 async function loadMarket() {
@@ -328,7 +320,7 @@ async function loadMarket() {
     status.textContent = 'Source retrieval: ' + snapshot.fetched_at + (age > 2 ? ' — refresh overdue' : ' — latest successful retrieval');
     renderMarketHealth(snapshot);
     renderCollapse(snapshot);
-    for (const item of snapshot.observations) {
+    for (const item of snapshot.observations.filter(x=>!['WILL5000INDFC','NASDAQNMS','NCBEILQ027S','DFII10'].includes(x.id))) {
       const row = document.createElement('tr');
       const source = document.createElement('a');
       source.href = item.source; source.textContent = item.label; source.style.color = '#28df91';
