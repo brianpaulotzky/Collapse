@@ -13,6 +13,10 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 SERIES = [
+    ('DJIA', 'Dow Jones Industrial Average', 'index points', 7),
+    ('NASDAQ100', 'Nasdaq 100', 'index points', 7),
+    ('WILL5000INDFC', 'Wilshire 5000', 'index points', 7),
+    ('NASDAQNMS', 'Nasdaq Global Market Composite', 'index points', 7),
     ('SP500', 'S&P 500', 'index points', 7),
     ('NASDAQCOM', 'Nasdaq Composite', 'index points', 7),
     ('VIXCLS', 'VIX', 'index points', 7),
@@ -63,8 +67,13 @@ def fetch(spec):
                     valid.append((date, value))
             except (ValueError, TypeError, KeyError):
                 continue
-        date, value = sorted(valid)[-1]
+        valid = sorted(dict(valid).items())
+        date, value = valid[-1]
         result.update(value=value, observation_date=date, status='available')
+        if len(valid) >= 2 and valid[-2][1] != 0:
+            previous_date, previous_value = valid[-2]
+            result.update(previous_date=previous_date, previous_value=previous_value,
+                          change_pct=100 * (value / previous_value - 1))
     except Exception as exc:
         print(f'{sid}: {type(exc).__name__}', flush=True)
         result.update(value=None, observation_date=None, status='unavailable', error=type(exc).__name__)
