@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-25T23:08:21.647894+00:00",
+  "fetched_at": "2026-11-26T05:02:29.150364+00:00",
   "observations": [
     {
       "id": "T10Y3M",
@@ -85,12 +85,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/NASDAQ100",
-      "value": 26214.17,
-      "observation_date": "2026-11-24",
+      "value": 26046.9,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 26746.1,
-      "change_pct": -1.988813322316152
+      "previous_date": "2026-11-24",
+      "previous_value": 26214.17,
+      "change_pct": -0.6380900100975806
     },
     {
       "id": "SP500",
@@ -111,12 +111,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/NASDAQCOM",
-      "value": 23733.54,
-      "observation_date": "2026-11-24",
+      "value": 23585.8,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 24089.56,
-      "change_pct": -1.4779016304158343
+      "previous_date": "2026-11-24",
+      "previous_value": 23733.54,
+      "change_pct": -0.6224945794011449
     },
     {
       "id": "VIXCLS",
