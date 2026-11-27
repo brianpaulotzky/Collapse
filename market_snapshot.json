@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-27T08:29:56.579649+00:00",
+  "fetched_at": "2026-11-27T18:28:24.591065+00:00",
   "observations": [
     {
       "id": "T10Y3M",
@@ -20,12 +20,12 @@
       "unit": "percentage points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-      "value": 3.72,
-      "observation_date": "2026-11-24",
+      "value": 3.77,
+      "observation_date": "2026-11-26",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 3.63,
-      "change_pct": 2.4793388429752206
+      "previous_date": "2026-11-25",
+      "previous_value": 3.77,
+      "change_pct": 0.0
     },
     {
       "id": "VXVCLS",
@@ -33,12 +33,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/VXVCLS",
-      "value": 25.47,
-      "observation_date": "2026-11-24",
+      "value": 26.29,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 25.5,
-      "change_pct": -0.11764705882353343
+      "previous_date": "2026-11-24",
+      "previous_value": 25.47,
+      "change_pct": 3.219473890851976
     },
     {
       "id": "GDP",
@@ -98,12 +98,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/SP500",
-      "value": 7201.09,
-      "observation_date": "2026-11-24",
+      "value": 7182.78,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 7237.17,
-      "change_pct": -0.49853741172308785
+      "previous_date": "2026-11-24",
+      "previous_value": 7201.09,
+      "change_pct": -0.25426706234751295
     },
     {
       "id": "NASDAQCOM",
@@ -124,12 +124,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/VIXCLS",
-      "value": 26.36,
-      "observation_date": "2026-11-24",
+      "value": 26.8,
+      "observation_date": "2026-11-26",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 26.62,
-      "change_pct": -0.9767092411720579
+      "previous_date": "2026-11-25",
+      "previous_value": 28.29,
+      "change_pct": -5.2668787557440755
     },
     {
       "id": "DGS10",
