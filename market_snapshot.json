@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-27T18:28:24.591065+00:00",
+  "fetched_at": "2026-11-28T01:40:59.869157+00:00",
   "observations": [
     {
       "id": "T10Y3M",
@@ -7,12 +7,12 @@
       "unit": "percentage points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/T10Y3M",
-      "value": 0.51,
-      "observation_date": "2026-11-25",
+      "value": 0.59,
+      "observation_date": "2026-11-27",
       "status": "available",
-      "previous_date": "2026-11-24",
-      "previous_value": 0.55,
-      "change_pct": -7.272727272727275
+      "previous_date": "2026-11-25",
+      "previous_value": 0.51,
+      "change_pct": 15.68627450980391
     },
     {
       "id": "BAMLH0A0HYM2",
@@ -72,12 +72,12 @@
       "unit": "index points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/DJIA",
-      "value": 50182.95,
-      "observation_date": "2026-11-25",
+      "value": 50774.94,
+      "observation_date": "2026-11-27",
       "status": "available",
-      "previous_date": "2026-11-24",
-      "previous_value": 50018.7,
-      "change_pct": 0.32837718693208284
+      "previous_date": "2026-11-25",
+      "previous_value": 50182.95,
+      "change_pct": 1.1796636108479142
     },
     {
       "id": "NASDAQ100",
@@ -137,12 +137,12 @@
       "unit": "%",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/DGS10",
-      "value": 4.91,
-      "observation_date": "2026-11-24",
+      "value": 4.85,
+      "observation_date": "2026-11-25",
       "status": "available",
-      "previous_date": "2026-11-23",
-      "previous_value": 4.92,
-      "change_pct": -0.20325203252031798
+      "previous_date": "2026-11-24",
+      "previous_value": 4.91,
+      "change_pct": -1.2219959266802527
     },
     {
       "id": "T10Y2Y",
@@ -150,12 +150,12 @@
       "unit": "percentage points",
       "max_age_days": 7,
       "source": "https://fred.stlouisfed.org/series/T10Y2Y",
-      "value": 0.24,
-      "observation_date": "2026-11-25",
+      "value": 0.25,
+      "observation_date": "2026-11-27",
       "status": "available",
-      "previous_date": "2026-11-24",
-      "previous_value": 0.28,
-      "change_pct": -14.285714285714302
+      "previous_date": "2026-11-25",
+      "previous_value": 0.24,
+      "change_pct": 4.166666666666674
     },
     {
       "id": "BAA10YM",
